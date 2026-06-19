@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Dashboard</h2>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-sm-6 col-xl-2">
+        <div class="card stat-card bg-primary text-white">
+            <div class="card-body">
+                <div class="stat-label">Total Devices</div>
+                <div class="stat-value">{{ total_devices }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-2">
+        <div class="card stat-card bg-info text-white">
+            <div class="card-body">
+                <div class="stat-label">Computers</div>
+                <div class="stat-value">{{ computers }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-2">
+        <div class="card stat-card bg-success text-white">
+            <div class="card-body">
+                <div class="stat-label">Laptops</div>
+                <div class="stat-value">{{ laptops }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-2">
+        <div class="card stat-card bg-warning text-dark">
+            <div class="card-body">
+                <div class="stat-label">Printers</div>
+                <div class="stat-value">{{ printers }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-2">
+        <div class="card stat-card bg-danger text-white">
+            <div class="card-body">
+                <div class="stat-label">Under Repair</div>
+                <div class="stat-value">{{ under_repair }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-2">
+        <div class="card stat-card bg-secondary text-white">
+            <div class="card-body">
+                <div class="stat-label">Working</div>
+                <div class="stat-value">{{ status_counts|selectattr('0', 'equalto', 'Working')|map(attribute=1)|list|first or 0 }}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Equipment by Type</h5>
+                <canvas id="typeChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Equipment by Status</h5>
+                <canvas id="statusChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const typeLabels = {{ type_counts|map(attribute=0)|list|tojson }};
+    const typeData = {{ type_counts|map(attribute=1)|list|tojson }};
+    const statusLabels = {{ status_counts|map(attribute=0)|list|tojson }};
+    const statusData = {{ status_counts|map(attribute=1)|list|tojson }};
+
+    new Chart(document.getElementById('typeChart'), {
+        type: 'doughnut',
+        data: {
+            labels: typeLabels,
+            datasets: [{
+                data: typeData,
+                backgroundColor: ['#0d6efd', '#198754', '#ffc107', '#dc3545', '#6c757d', '#6610f2']
+            }]
+        },
+        options: { responsive: true }
+    });
+
+    new Chart(document.getElementById('statusChart'), {
+        type: 'bar',
+        data: {
+            labels: statusLabels,
+            datasets: [{
+                label: 'Count',
+                data: statusData,
+                backgroundColor: ['#0d6efd', '#198754', '#ffc107', '#dc3545', '#6c757d']
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Reports</h2>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Counts by Type</h5>
+                <canvas id="typeReportChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Counts by Status</h5>
+                <canvas id="statusReportChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h5 class="card-title">Summary</h5>
+        <div class="table-responsive">
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for label, value in type_labels|zip(type_data) %}
+                    <tr>
+                        <td>{{ label }}</td>
+                        <td>{{ value }}</td>
+                    </tr>
+                    {% endfor %}
+                    {% for label, value in status_labels|zip(status_data) %}
+                    <tr>
+                        <td>{{ label }}</td>
+                        <td>{{ value }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const typeReportLabels = {{ type_labels|tojson }};
+    const typeReportData = {{ type_data|tojson }};
+    const statusReportLabels = {{ status_labels|tojson }};
+    const statusReportData = {{ status_data|tojson }};
+
+    new Chart(document.getElementById('typeReportChart'), {
+        type: 'pie',
+        data: {
+            labels: typeReportLabels,
+            datasets: [{
+                data: typeReportData,
+                backgroundColor: ['#0d6efd', '#198754', '#ffc107', '#dc3545', '#6c757d', '#6610f2']
+            }]
+        },
+        options: { responsive: true }
+    });
+
+    new Chart(document.getElementById('statusReportChart'), {
+        type: 'bar',
+        data: {
+            labels: statusReportLabels,
+            datasets: [{
+                label: 'Equipment',
+                data: statusReportData,
+                backgroundColor: ['#0d6efd', '#198754', '#ffc107', '#dc3545', '#6c757d']
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+        }
+    });
+</script>
+{% endblock %}

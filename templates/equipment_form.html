@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h3 class="mb-4">{{ 'Edit Equipment' if equipment else 'Add Equipment' }}</h3>
+        <form method="post">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">Inventory Number</label>
+                    <input type="text" class="form-control" name="inventory_number" value="{{ equipment.inventory_number if equipment else '' }}" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Device Name</label>
+                    <input type="text" class="form-control" name="device_name" value="{{ equipment.device_name if equipment else '' }}" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Device Type</label>
+                    <select class="form-select" name="device_type" required>
+                        {% for option in ['Computer', 'Laptop', 'Printer', 'Monitor', 'Network Device'] %}
+                            <option value="{{ option }}" {{ 'selected' if equipment and equipment.device_type == option else '' }}>{{ option }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Brand</label>
+                    <input type="text" class="form-control" name="brand" value="{{ equipment.brand if equipment else '' }}">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Model</label>
+                    <input type="text" class="form-control" name="model" value="{{ equipment.model if equipment else '' }}">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">CPU</label>
+                    <input type="text" class="form-control" name="cpu" value="{{ equipment.cpu if equipment else '' }}">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">RAM</label>
+                    <input type="text" class="form-control" name="ram" value="{{ equipment.ram if equipment else '' }}">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Storage</label>
+                    <input type="text" class="form-control" name="storage" value="{{ equipment.storage if equipment else '' }}">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Serial Number</label>
+                    <input type="text" class="form-control" name="serial_number" value="{{ equipment.serial_number if equipment else '' }}" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Purchase Date</label>
+                    <input type="date" class="form-control" name="purchase_date" value="{{ equipment.purchase_date.isoformat() if equipment and equipment.purchase_date else '' }}">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Location / Office</label>
+                    <input type="text" class="form-control" name="location" value="{{ equipment.location if equipment else '' }}">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Responsible Employee</label>
+                    <input type="text" class="form-control" name="responsible_employee" value="{{ equipment.responsible_employee if equipment else '' }}">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Status</label>
+                    <select class="form-select" name="status" required>
+                        {% for option in ['Working', 'Maintenance', 'Repair', 'Decommissioned'] %}
+                            <option value="{{ option }}" {{ 'selected' if equipment and equipment.status == option else '' }}>{{ option }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a href="{{ url_for('equipment_list') }}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
