@@ -125,9 +125,9 @@
     <aside class="sidebar">
       <div class="sidebar-brand">CEMS</div>
       <nav class="sidebar-nav">
-        <a href="#" class="active">📊 Dashboard</a>
-        <a href="#">💻 Equipment</a>
-        <a href="#">📈 Reports</a>
+        <a href="#dashboard" class="active">📊 Dashboard</a>
+        <a href="#equipment">💻 Equipment</a>
+        <a href="#reports">📈 Reports</a>
       </nav>
     </aside>
 
@@ -142,7 +142,7 @@
         </div>
       </header>
 
-      <section class="main-body">
+      <section id="dashboard" class="main-body">
         <div class="d-flex justify-content-between align-items-center mb-4">
           <h2 class="mb-0">Dashboard</h2>
         </div>
@@ -217,6 +217,121 @@
           </div>
         </div>
       </section>
+
+      <section id="equipment" class="main-body" style="padding-top: 0;">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h2 class="mb-0">Equipment Inventory</h2>
+          <button class="btn btn-primary">Add Equipment</button>
+        </div>
+
+        <div class="card p-3 mb-3">
+          <div class="row g-2">
+            <div class="col-md-2"><input class="form-control" placeholder="Inventory number"></div>
+            <div class="col-md-2"><input class="form-control" placeholder="Serial number"></div>
+            <div class="col-md-2"><input class="form-control" placeholder="Employee"></div>
+            <div class="col-md-2">
+              <select class="form-select">
+                <option>All Types</option>
+                <option>Computer</option>
+                <option>Laptop</option>
+                <option>Printer</option>
+              </select>
+            </div>
+            <div class="col-md-2">
+              <select class="form-select">
+                <option>All Status</option>
+                <option>Working</option>
+                <option>Repair</option>
+                <option>Maintenance</option>
+              </select>
+            </div>
+            <div class="col-md-2"><button class="btn btn-outline-secondary w-100">Search</button></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Inventory</th>
+                  <th>Device</th>
+                  <th>Type</th>
+                  <th>Brand</th>
+                  <th>Serial</th>
+                  <th>Employee</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>INV-001</td>
+                  <td>Desktop PC</td>
+                  <td>Computer</td>
+                  <td>Lenovo</td>
+                  <td>SN-1001</td>
+                  <td>John</td>
+                  <td><span class="badge bg-success">Working</span></td>
+                  <td><button class="btn btn-sm btn-outline-primary">View</button></td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>INV-002</td>
+                  <td>Office Laptop</td>
+                  <td>Laptop</td>
+                  <td>HP</td>
+                  <td>SN-1002</td>
+                  <td>Alice</td>
+                  <td><span class="badge bg-warning text-dark">Repair</span></td>
+                  <td><button class="btn btn-sm btn-outline-primary">View</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="reports" class="main-body" style="padding-top: 0;">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h2 class="mb-0">Reports</h2>
+        </div>
+
+        <div class="row g-3 mb-4">
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Counts by Type</h5>
+                <canvas id="reportTypeChart"></canvas>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Counts by Status</h5>
+                <canvas id="reportStatusChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Summary</h5>
+            <table class="table table-sm mb-0">
+              <tbody>
+                <tr><td>Computer</td><td>8</td></tr>
+                <tr><td>Laptop</td><td>7</td></tr>
+                <tr><td>Printer</td><td>3</td></tr>
+                <tr><td>Working</td><td>18</td></tr>
+                <tr><td>Repair</td><td>2</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
     </main>
   </div>
 
@@ -239,6 +354,34 @@
         labels: ['Working', 'Maintenance', 'Repair', 'Decommissioned'],
         datasets: [{
           label: 'Count',
+          data: [18, 3, 2, 1],
+          backgroundColor: ['#0d6efd', '#198754', '#ffc107', '#dc3545']
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+      }
+    });
+
+    new Chart(document.getElementById('reportTypeChart'), {
+      type: 'pie',
+      data: {
+        labels: ['Computer', 'Laptop', 'Printer', 'Monitor'],
+        datasets: [{
+          data: [8, 7, 3, 6],
+          backgroundColor: ['#0d6efd', '#198754', '#ffc107', '#dc3545']
+        }]
+      },
+      options: { responsive: true }
+    });
+
+    new Chart(document.getElementById('reportStatusChart'), {
+      type: 'bar',
+      data: {
+        labels: ['Working', 'Maintenance', 'Repair', 'Decommissioned'],
+        datasets: [{
+          label: 'Equipment',
           data: [18, 3, 2, 1],
           backgroundColor: ['#0d6efd', '#198754', '#ffc107', '#dc3545']
         }]
