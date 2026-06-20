@@ -152,7 +152,7 @@
             <div class="card stat-card bg-primary">
               <div class="card-body">
                 <div class="stat-label">Total Devices</div>
-                <div class="stat-value">24</div>
+                <div class="stat-value" id="totalDevices">0</div>
               </div>
             </div>
           </div>
@@ -160,7 +160,7 @@
             <div class="card stat-card bg-info">
               <div class="card-body">
                 <div class="stat-label">Computers</div>
-                <div class="stat-value">8</div>
+                <div class="stat-value" id="computerCount">0</div>
               </div>
             </div>
           </div>
@@ -168,7 +168,7 @@
             <div class="card stat-card bg-success">
               <div class="card-body">
                 <div class="stat-label">Laptops</div>
-                <div class="stat-value">7</div>
+                <div class="stat-value" id="laptopCount">0</div>
               </div>
             </div>
           </div>
@@ -176,7 +176,7 @@
             <div class="card stat-card bg-warning text-dark">
               <div class="card-body">
                 <div class="stat-label">Printers</div>
-                <div class="stat-value">3</div>
+                <div class="stat-value" id="printerCount">0</div>
               </div>
             </div>
           </div>
@@ -184,7 +184,7 @@
             <div class="card stat-card bg-danger">
               <div class="card-body">
                 <div class="stat-label">Under Repair</div>
-                <div class="stat-value">2</div>
+                <div class="stat-value" id="repairCount">0</div>
               </div>
             </div>
           </div>
@@ -192,7 +192,7 @@
             <div class="card stat-card bg-secondary">
               <div class="card-body">
                 <div class="stat-label">Working</div>
-                <div class="stat-value">18</div>
+                <div class="stat-value" id="workingCount">0</div>
               </div>
             </div>
           </div>
@@ -221,31 +221,34 @@
       <section id="equipment" class="main-body" style="padding-top: 0;">
         <div class="d-flex justify-content-between align-items-center mb-3">
           <h2 class="mb-0">Equipment Inventory</h2>
-          <button class="btn btn-primary">Add Equipment</button>
+          <button class="btn btn-primary" id="addEquipmentBtn">Add Equipment</button>
         </div>
 
         <div class="card p-3 mb-3">
           <div class="row g-2">
-            <div class="col-md-2"><input class="form-control" placeholder="Inventory number"></div>
-            <div class="col-md-2"><input class="form-control" placeholder="Serial number"></div>
-            <div class="col-md-2"><input class="form-control" placeholder="Employee"></div>
+            <div class="col-md-2"><input class="form-control" id="filterInventory" placeholder="Inventory number"></div>
+            <div class="col-md-2"><input class="form-control" id="filterSerial" placeholder="Serial number"></div>
+            <div class="col-md-2"><input class="form-control" id="filterEmployee" placeholder="Employee"></div>
             <div class="col-md-2">
-              <select class="form-select">
-                <option>All Types</option>
-                <option>Computer</option>
-                <option>Laptop</option>
-                <option>Printer</option>
+              <select class="form-select" id="filterType">
+                <option value="">All Types</option>
+                <option value="Computer">Computer</option>
+                <option value="Laptop">Laptop</option>
+                <option value="Printer">Printer</option>
+                <option value="Monitor">Monitor</option>
+                <option value="Network Device">Network Device</option>
               </select>
             </div>
             <div class="col-md-2">
-              <select class="form-select">
-                <option>All Status</option>
-                <option>Working</option>
-                <option>Repair</option>
-                <option>Maintenance</option>
+              <select class="form-select" id="filterStatus">
+                <option value="">All Status</option>
+                <option value="Working">Working</option>
+                <option value="Repair">Repair</option>
+                <option value="Maintenance">Maintenance</option>
+                <option value="Decommissioned">Decommissioned</option>
               </select>
             </div>
-            <div class="col-md-2"><button class="btn btn-outline-secondary w-100">Search</button></div>
+            <div class="col-md-2"><button class="btn btn-outline-secondary w-100" id="searchBtn">Search</button></div>
           </div>
         </div>
 
@@ -265,30 +268,7 @@
                   <th>Actions</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>INV-001</td>
-                  <td>Desktop PC</td>
-                  <td>Computer</td>
-                  <td>Lenovo</td>
-                  <td>SN-1001</td>
-                  <td>John</td>
-                  <td><span class="badge bg-success">Working</span></td>
-                  <td><button class="btn btn-sm btn-outline-primary">View</button></td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>INV-002</td>
-                  <td>Office Laptop</td>
-                  <td>Laptop</td>
-                  <td>HP</td>
-                  <td>SN-1002</td>
-                  <td>Alice</td>
-                  <td><span class="badge bg-warning text-dark">Repair</span></td>
-                  <td><button class="btn btn-sm btn-outline-primary">View</button></td>
-                </tr>
-              </tbody>
+              <tbody id="equipmentRows"></tbody>
             </table>
           </div>
         </div>
@@ -297,6 +277,35 @@
       <section id="reports" class="main-body" style="padding-top: 0;">
         <div class="d-flex justify-content-between align-items-center mb-4">
           <h2 class="mb-0">Reports</h2>
+        </div>
+
+        <div id="addEquipmentForm" class="card p-4 mb-4 d-none">
+          <h4 class="mb-3">Add Equipment</h4>
+          <div class="row g-3">
+            <div class="col-md-6"><input class="form-control" id="newInventory" placeholder="Inventory Number"></div>
+            <div class="col-md-6"><input class="form-control" id="newName" placeholder="Device Name"></div>
+            <div class="col-md-6"><input class="form-control" id="newBrand" placeholder="Brand"></div>
+            <div class="col-md-6"><input class="form-control" id="newSerial" placeholder="Serial Number"></div>
+            <div class="col-md-6">
+              <select class="form-select" id="newType">
+                <option>Computer</option>
+                <option>Laptop</option>
+                <option>Printer</option>
+                <option>Monitor</option>
+                <option>Network Device</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <select class="form-select" id="newStatus">
+                <option>Working</option>
+                <option>Maintenance</option>
+                <option>Repair</option>
+                <option>Decommissioned</option>
+              </select>
+            </div>
+            <div class="col-md-6"><input class="form-control" id="newEmployee" placeholder="Responsible Employee"></div>
+            <div class="col-md-6"><button class="btn btn-primary w-100" id="saveNewEquipment">Save</button></div>
+          </div>
         </div>
 
         <div class="row g-3 mb-4">
@@ -321,13 +330,7 @@
           <div class="card-body">
             <h5 class="card-title">Summary</h5>
             <table class="table table-sm mb-0">
-              <tbody>
-                <tr><td>Computer</td><td>8</td></tr>
-                <tr><td>Laptop</td><td>7</td></tr>
-                <tr><td>Printer</td><td>3</td></tr>
-                <tr><td>Working</td><td>18</td></tr>
-                <tr><td>Repair</td><td>2</td></tr>
-              </tbody>
+              <tbody id="summaryRows"></tbody>
             </table>
           </div>
         </div>
@@ -336,61 +339,214 @@
   </div>
 
   <script>
-    new Chart(document.getElementById('typeChart'), {
-      type: 'doughnut',
-      data: {
-        labels: ['Computer', 'Laptop', 'Printer', 'Monitor', 'Network Device'],
-        datasets: [{
-          data: [8, 7, 3, 4, 2],
-          backgroundColor: ['#0d6efd', '#198754', '#ffc107', '#dc3545', '#6c757d']
-        }]
-      },
-      options: { responsive: true }
+    let equipmentData = [
+      { id: 1, inventory: 'INV-001', name: 'Desktop PC', type: 'Computer', brand: 'Lenovo', serial: 'SN-1001', employee: 'John', status: 'Working' },
+      { id: 2, inventory: 'INV-002', name: 'Office Laptop', type: 'Laptop', brand: 'HP', serial: 'SN-1002', employee: 'Alice', status: 'Repair' },
+      { id: 3, inventory: 'INV-003', name: 'Laser Printer', type: 'Printer', brand: 'Canon', serial: 'SN-1003', employee: 'Bob', status: 'Maintenance' },
+      { id: 4, inventory: 'INV-004', name: 'Acer Monitor', type: 'Monitor', brand: 'Dell', serial: 'SN-1004', employee: 'Carol', status: 'Working' },
+      { id: 5, inventory: 'INV-005', name: 'Network Switch', type: 'Network Device', brand: 'Cisco', serial: 'SN-1005', employee: 'Dave', status: 'Working' },
+      { id: 6, inventory: 'INV-006', name: 'Workstation', type: 'Computer', brand: 'Dell', serial: 'SN-1006', employee: 'Emma', status: 'Working' },
+      { id: 7, inventory: 'INV-007', name: 'Gaming Laptop', type: 'Laptop', brand: 'Acer', serial: 'SN-1007', employee: 'Mike', status: 'Repair' },
+      { id: 8, inventory: 'INV-008', name: 'Inkjet Printer', type: 'Printer', brand: 'Epson', serial: 'SN-1008', employee: 'Nora', status: 'Working' },
+      { id: 9, inventory: 'INV-009', name: 'LCD Monitor', type: 'Monitor', brand: 'Samsung', serial: 'SN-1009', employee: 'Omar', status: 'Maintenance' },
+      { id: 10, inventory: 'INV-010', name: 'Router', type: 'Network Device', brand: 'TP-Link', serial: 'SN-1010', employee: 'Liam', status: 'Working' },
+      { id: 11, inventory: 'INV-011', name: 'Mini PC', type: 'Computer', brand: 'Intel', serial: 'SN-1011', employee: 'Ava', status: 'Working' },
+      { id: 12, inventory: 'INV-012', name: 'Business Laptop', type: 'Laptop', brand: 'Lenovo', serial: 'SN-1012', employee: 'Noah', status: 'Repair' },
+      { id: 13, inventory: 'INV-013', name: 'Office Printer', type: 'Printer', brand: 'Brother', serial: 'SN-1013', employee: 'Mia', status: 'Working' },
+      { id: 14, inventory: 'INV-014', name: 'Ultrawide Monitor', type: 'Monitor', brand: 'LG', serial: 'SN-1014', employee: 'Ethan', status: 'Maintenance' },
+      { id: 15, inventory: 'INV-015', name: 'Access Point', type: 'Network Device', brand: 'Ubiquiti', serial: 'SN-1015', employee: 'Chloe', status: 'Working' },
+      { id: 16, inventory: 'INV-016', name: 'All-in-One PC', type: 'Computer', brand: 'HP', serial: 'SN-1016', employee: 'Lucas', status: 'Working' },
+      { id: 17, inventory: 'INV-017', name: 'Convertible Laptop', type: 'Laptop', brand: 'Microsoft', serial: 'SN-1017', employee: 'Emma', status: 'Repair' },
+      { id: 18, inventory: 'INV-018', name: 'Scanner', type: 'Printer', brand: 'Canon', serial: 'SN-1018', employee: 'Sophia', status: 'Working' },
+      { id: 19, inventory: 'INV-019', name: 'Curved Monitor', type: 'Monitor', brand: 'ASUS', serial: 'SN-1019', employee: 'James', status: 'Maintenance' },
+      { id: 20, inventory: 'INV-020', name: 'Firewall', type: 'Network Device', brand: 'Fortinet', serial: 'SN-1020', employee: 'Olivia', status: 'Working' },
+      { id: 21, inventory: 'INV-021', name: 'Media PC', type: 'Computer', brand: 'Acer', serial: 'SN-1021', employee: 'Mason', status: 'Working' },
+      { id: 22, inventory: 'INV-022', name: 'Mobile Laptop', type: 'Laptop', brand: 'Samsung', serial: 'SN-1022', employee: 'Grace', status: 'Repair' },
+      { id: 23, inventory: 'INV-023', name: 'LaserJet Printer', type: 'Printer', brand: 'HP', serial: 'SN-1023', employee: 'Daniel', status: 'Working' },
+      { id: 24, inventory: 'INV-024', name: 'Projector', type: 'Monitor', brand: 'Epson', serial: 'SN-1024', employee: 'Ella', status: 'Maintenance' }
+    ];
+
+    const palette = {
+      Computer: '#0d6efd',
+      Laptop: '#198754',
+      Printer: '#ffc107',
+      Monitor: '#dc3545',
+      'Network Device': '#6c757d'
+    };
+
+    function countBy(data, key) {
+      const result = {};
+      data.forEach(item => {
+        result[item[key]] = (result[item[key]] || 0) + 1;
+      });
+      return result;
+    }
+
+    function statusBadgeClass(status) {
+      return status === 'Working' ? 'bg-success' :
+             status === 'Repair' ? 'bg-warning text-dark' :
+             status === 'Maintenance' ? 'bg-info' :
+             'bg-secondary';
+    }
+
+    function filterEquipment() {
+      const inventory = document.getElementById('filterInventory').value.trim().toLowerCase();
+      const serial = document.getElementById('filterSerial').value.trim().toLowerCase();
+      const employee = document.getElementById('filterEmployee').value.trim().toLowerCase();
+      const type = document.getElementById('filterType').value;
+      const status = document.getElementById('filterStatus').value;
+
+      return equipmentData.filter(item =>
+        (!inventory || item.inventory.toLowerCase().includes(inventory)) &&
+        (!serial || item.serial.toLowerCase().includes(serial)) &&
+        (!employee || item.employee.toLowerCase().includes(employee)) &&
+        (!type || item.type === type) &&
+        (!status || item.status === status)
+      );
+    }
+
+    function renderEquipmentTable() {
+      const visibleItems = filterEquipment();
+      const rows = visibleItems.map(item => `
+        <tr>
+          <td>${item.id}</td>
+          <td>${item.inventory}</td>
+          <td>${item.name}</td>
+          <td>${item.type}</td>
+          <td>${item.brand}</td>
+          <td>${item.serial}</td>
+          <td>${item.employee}</td>
+          <td><span class="badge ${statusBadgeClass(item.status)}">${item.status}</span></td>
+          <td>
+            <button class="btn btn-sm btn-outline-primary view-btn" data-id="${item.id}">View</button>
+          </td>
+        </tr>
+      `).join('');
+
+      document.getElementById('equipmentRows').innerHTML = rows || `
+        <tr>
+          <td colspan="9" class="text-center text-muted">No equipment found.</td>
+        </tr>
+      `;
+    }
+
+    function updateDashboard() {
+      const typeCounts = countBy(equipmentData, 'type');
+      const statusCounts = countBy(equipmentData, 'status');
+
+      document.getElementById('totalDevices').textContent = equipmentData.length;
+      document.getElementById('computerCount').textContent = typeCounts.Computer || 0;
+      document.getElementById('laptopCount').textContent = typeCounts.Laptop || 0;
+      document.getElementById('printerCount').textContent = typeCounts.Printer || 0;
+      document.getElementById('repairCount').textContent = statusCounts.Repair || 0;
+      document.getElementById('workingCount').textContent = statusCounts.Working || 0;
+    }
+
+    function renderSummaryTable() {
+      const typeCounts = countBy(equipmentData, 'type');
+      const statusCounts = countBy(equipmentData, 'status');
+      const summaryItems = [
+        ...Object.entries(typeCounts),
+        ...Object.entries(statusCounts)
+      ];
+      document.getElementById('summaryRows').innerHTML = summaryItems.map(([label, value]) => `
+        <tr><td>${label}</td><td>${value}</td></tr>
+      `).join('');
+    }
+
+    function createChart(elementId, type, labels, values, colors, legendLabel) {
+      const chartElement = document.getElementById(elementId);
+      if (chartElement && chartElement.__chart) {
+        chartElement.__chart.destroy();
+      }
+      const chart = new Chart(chartElement, {
+        type,
+        data: {
+          labels,
+          datasets: [{
+            label: legendLabel || 'Count',
+            data: values,
+            backgroundColor: colors
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: type === 'bar' ? { y: { beginAtZero: true, ticks: { stepSize: 1 } } } : {}
+        }
+      });
+      chartElement.__chart = chart;
+      return chart;
+    }
+
+    function renderCharts() {
+      const typeCounts = countBy(equipmentData, 'type');
+      const statusCounts = countBy(equipmentData, 'status');
+
+      const typeLabels = Object.keys(typeCounts);
+      const typeValues = Object.values(typeCounts);
+      const typeColors = typeLabels.map(label => palette[label] || '#6c757d');
+
+      const statusLabels = Object.keys(statusCounts);
+      const statusValues = Object.values(statusCounts);
+      const statusColors = statusLabels.map(label => {
+        if (label === 'Working') return '#198754';
+        if (label === 'Repair') return '#ffc107';
+        if (label === 'Maintenance') return '#0d6efd';
+        return '#6c757d';
+      });
+
+      createChart('typeChart', 'doughnut', typeLabels, typeValues, typeColors);
+      createChart('statusChart', 'bar', statusLabels, statusValues, statusColors, 'Count');
+      createChart('reportTypeChart', 'pie', typeLabels, typeValues, typeColors);
+      createChart('reportStatusChart', 'bar', statusLabels, statusValues, statusColors, 'Equipment');
+    }
+
+    function refreshAll() {
+      renderEquipmentTable();
+      updateDashboard();
+      renderSummaryTable();
+      renderCharts();
+    }
+
+    document.getElementById('searchBtn').addEventListener('click', refreshAll);
+    ['filterInventory', 'filterSerial', 'filterEmployee', 'filterType', 'filterStatus']
+      .forEach(id => document.getElementById(id).addEventListener('input', refreshAll));
+
+    document.getElementById('filterType').addEventListener('change', refreshAll);
+    document.getElementById('filterStatus').addEventListener('change', refreshAll);
+
+    document.getElementById('addEquipmentBtn').addEventListener('click', () => {
+      document.getElementById('addEquipmentForm').classList.toggle('d-none');
     });
 
-    new Chart(document.getElementById('statusChart'), {
-      type: 'bar',
-      data: {
-        labels: ['Working', 'Maintenance', 'Repair', 'Decommissioned'],
-        datasets: [{
-          label: 'Count',
-          data: [18, 3, 2, 1],
-          backgroundColor: ['#0d6efd', '#198754', '#ffc107', '#dc3545']
-        }]
-      },
-      options: {
-        responsive: true,
-        scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+    document.getElementById('saveNewEquipment').addEventListener('click', () => {
+      const newItem = {
+        id: equipmentData.length + 1,
+        inventory: document.getElementById('newInventory').value || `INV-${String(equipmentData.length + 1).padStart(3, '0')}`,
+        name: document.getElementById('newName').value || 'New Device',
+        type: document.getElementById('newType').value,
+        brand: document.getElementById('newBrand').value || 'Unknown',
+        serial: document.getElementById('newSerial').value || `SN-${equipmentData.length + 1000}`,
+        employee: document.getElementById('newEmployee').value || 'Unassigned',
+        status: document.getElementById('newStatus').value
+      };
+
+      equipmentData.push(newItem);
+      document.getElementById('addEquipmentForm').classList.add('d-none');
+      refreshAll();
+    });
+
+    document.getElementById('equipmentRows').addEventListener('click', (event) => {
+      if (event.target.classList.contains('view-btn')) {
+        const id = Number(event.target.dataset.id);
+        const item = equipmentData.find(x => x.id === id);
+        if (item) {
+          alert(`Device: ${item.name}\nInventory: ${item.inventory}\nType: ${item.type}\nStatus: ${item.status}`);
+        }
       }
     });
 
-    new Chart(document.getElementById('reportTypeChart'), {
-      type: 'pie',
-      data: {
-        labels: ['Computer', 'Laptop', 'Printer', 'Monitor'],
-        datasets: [{
-          data: [8, 7, 3, 6],
-          backgroundColor: ['#0d6efd', '#198754', '#ffc107', '#dc3545']
-        }]
-      },
-      options: { responsive: true }
-    });
-
-    new Chart(document.getElementById('reportStatusChart'), {
-      type: 'bar',
-      data: {
-        labels: ['Working', 'Maintenance', 'Repair', 'Decommissioned'],
-        datasets: [{
-          label: 'Equipment',
-          data: [18, 3, 2, 1],
-          backgroundColor: ['#0d6efd', '#198754', '#ffc107', '#dc3545']
-        }]
-      },
-      options: {
-        responsive: true,
-        scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
-      }
-    });
+    refreshAll();
   </script>
 </body>
 </html>
