@@ -224,6 +224,35 @@
           <button class="btn btn-primary" id="addEquipmentBtn">Add Equipment</button>
         </div>
 
+        <div id="addEquipmentForm" class="card p-4 mb-4 d-none">
+          <h4 class="mb-3">Add Equipment</h4>
+          <div class="row g-3">
+            <div class="col-md-6"><input class="form-control" id="newInventory" placeholder="Inventory Number"></div>
+            <div class="col-md-6"><input class="form-control" id="newName" placeholder="Device Name"></div>
+            <div class="col-md-6"><input class="form-control" id="newBrand" placeholder="Brand"></div>
+            <div class="col-md-6"><input class="form-control" id="newSerial" placeholder="Serial Number"></div>
+            <div class="col-md-6">
+              <select class="form-select" id="newType">
+                <option>Computer</option>
+                <option>Laptop</option>
+                <option>Printer</option>
+                <option>Monitor</option>
+                <option>Network Device</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <select class="form-select" id="newStatus">
+                <option>Working</option>
+                <option>Maintenance</option>
+                <option>Repair</option>
+                <option>Decommissioned</option>
+              </select>
+            </div>
+            <div class="col-md-6"><input class="form-control" id="newEmployee" placeholder="Responsible Employee"></div>
+            <div class="col-md-6"><button class="btn btn-primary w-100" id="saveNewEquipment">Save</button></div>
+          </div>
+        </div>
+
         <div class="card p-3 mb-3">
           <div class="row g-2">
             <div class="col-md-2"><input class="form-control" id="filterInventory" placeholder="Inventory number"></div>
@@ -277,35 +306,6 @@
       <section id="reports" class="main-body" style="padding-top: 0;">
         <div class="d-flex justify-content-between align-items-center mb-4">
           <h2 class="mb-0">Reports</h2>
-        </div>
-
-        <div id="addEquipmentForm" class="card p-4 mb-4 d-none">
-          <h4 class="mb-3">Add Equipment</h4>
-          <div class="row g-3">
-            <div class="col-md-6"><input class="form-control" id="newInventory" placeholder="Inventory Number"></div>
-            <div class="col-md-6"><input class="form-control" id="newName" placeholder="Device Name"></div>
-            <div class="col-md-6"><input class="form-control" id="newBrand" placeholder="Brand"></div>
-            <div class="col-md-6"><input class="form-control" id="newSerial" placeholder="Serial Number"></div>
-            <div class="col-md-6">
-              <select class="form-select" id="newType">
-                <option>Computer</option>
-                <option>Laptop</option>
-                <option>Printer</option>
-                <option>Monitor</option>
-                <option>Network Device</option>
-              </select>
-            </div>
-            <div class="col-md-6">
-              <select class="form-select" id="newStatus">
-                <option>Working</option>
-                <option>Maintenance</option>
-                <option>Repair</option>
-                <option>Decommissioned</option>
-              </select>
-            </div>
-            <div class="col-md-6"><input class="form-control" id="newEmployee" placeholder="Responsible Employee"></div>
-            <div class="col-md-6"><button class="btn btn-primary w-100" id="saveNewEquipment">Save</button></div>
-          </div>
         </div>
 
         <div class="row g-3 mb-4">
@@ -516,7 +516,13 @@
     document.getElementById('filterStatus').addEventListener('change', refreshAll);
 
     document.getElementById('addEquipmentBtn').addEventListener('click', () => {
-      document.getElementById('addEquipmentForm').classList.toggle('d-none');
+      const form = document.getElementById('addEquipmentForm');
+      const isHidden = form.classList.contains('d-none');
+      form.classList.toggle('d-none');
+      if (isHidden) {
+        form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        document.getElementById('newInventory').focus();
+      }
     });
 
     document.getElementById('saveNewEquipment').addEventListener('click', () => {
